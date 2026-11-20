@@ -8,7 +8,7 @@ const SUGGESTIONS = [
   '幫我找一段空檔'
 ];
 
-export function setupPlannerAssistant(app, getPlannerData) {
+export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
   const launchButton = document.querySelector('#openAiAssistant');
   const panel = document.querySelector('#aiAssistant');
   const closeButton = document.querySelector('#closeAiAssistant');
@@ -22,10 +22,11 @@ export function setupPlannerAssistant(app, getPlannerData) {
   let model = null;
   let chat = null;
   let sending = false;
-  let setupError = '';
+  let setupError = appCheck.error || '';
 
   try {
-    const ai = getAI(app, { backend: new GoogleAIBackend() });
+    if (!appCheck.ready) throw new Error(setupError || 'Firebase App Check 尚未完成 reCAPTCHA Enterprise 設定。');
+    const ai = getAI(app, { backend: new GoogleAIBackend(), useLimitedUseAppCheckTokens: true });
     model = getGenerativeModel(ai, {
       model: 'gemini-4-hydrogen',
       systemInstruction: SYSTEM_INSTRUCTION,
@@ -98,8 +99,8 @@ export function setupPlannerAssistant(app, getPlannerData) {
   function explainError(error) {
     const detail = `${error?.code || ''} ${error?.message || ''}`.toLowerCase();
     if (setupError) return `AI 小幫手尚未就緒：${setupError}`;
-    if (detail.includes('app check') || detail.includes('appcheck') || detail.includes('403')) {
-      return 'AI 安全驗證尚未完成。請確認 Firebase AI Logic 與 App Check 已啟用，並已設定網站網域。';
+    if (detail.includes('app check') || detail.includes('appcheck') || detail.includes('permission_denied') || detail.includes('403')) {
+      return 'Firebase 擋下了 AI 請求。請確認 App Check 的 reCAPTCHA Enterprise 網站金鑰已設定，且允許 brook96222-maker.github.io。';
     }
     if (detail.includes('api not enabled') || detail.includes('service_disabled') || detail.includes('permission_denied')) {
       return 'Firebase AI Logic 尚未完成啟用，請在 Firebase 控制台完成 Gemini Developer API 設定後再試。';

@@ -65,17 +65,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <script type="module">
 import { setupPlannerAssistant } from './ai-assistant.js';
 import { initializeApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import { initializeAuth, inMemoryPersistence, browserPopupRedirectResolver, GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
 const firebaseConfig={apiKey:'AIzaSyCIN5WIJnX_8nMWI_Q8EImACJNaajUUGKk',authDomain:'class-1030-a86fb.firebaseapp.com',projectId:'class-1030-a86fb',appId:'1:266244758760:web:4b53c6e68ea24504d33d5d'};
+const recaptchaEnterpriseSiteKey='6LcWHikuAAAAAIFUYoyxIpCJU33lqzoeesU7iadW';
 const gate=document.querySelector('#authGate'),root=document.querySelector('#plannerApp'),login=document.querySelector('#googleSignIn'),lineLogin=document.querySelector('#lineSignIn'),logout=document.querySelector('#signOutBtn'),error=document.querySelector('#authError'),userLabel=document.querySelector('#signedInUser'),signedInAvatar=document.querySelector('#signedInAvatar'),signedInName=document.querySelector('#signedInName'),syncStatus=document.querySelector('#syncStatus'),mobileNav=document.querySelector('.mobile-nav');
 function showError(message){error.textContent=message;error.hidden=!message}
 function setSyncStatus(message,isError=false){syncStatus.textContent=message;syncStatus.classList.toggle('error',isError)}
 signedInAvatar.addEventListener('error',()=>{signedInAvatar.hidden=true;signedInAvatar.removeAttribute('src')});
 if(Object.values(firebaseConfig).some(value=>!value)){login.disabled=true;showError('Firebase 設定不完整，請確認 Web App 設定。')}
 else{
-  const app=initializeApp(firebaseConfig),auth=initializeAuth(app,{persistence:[inMemoryPersistence],popupRedirectResolver:browserPopupRedirectResolver}),db=getFirestore(app),provider=new GoogleAuthProvider(),lineProvider=new OAuthProvider('oidc.line');provider.setCustomParameters({prompt:'select_account'});lineProvider.addScope('profile');
-  setupPlannerAssistant(app,()=>window.getPlannerData?.()||{categories:[],items:[]});
+  const app=initializeApp(firebaseConfig);let appCheckState={ready:false,error:'尚未設定 reCAPTCHA Enterprise 網站金鑰。'};
+  if(recaptchaEnterpriseSiteKey){try{initializeAppCheck(app,{provider:new ReCaptchaEnterpriseProvider(recaptchaEnterpriseSiteKey),isTokenAutoRefreshEnabled:true});appCheckState={ready:true,error:''}}catch(error){appCheckState={ready:false,error:error?.message||'App Check 初始化失敗。'}}}
+  const auth=initializeAuth(app,{persistence:[inMemoryPersistence],popupRedirectResolver:browserPopupRedirectResolver}),db=getFirestore(app),provider=new GoogleAuthProvider(),lineProvider=new OAuthProvider('oidc.line');provider.setCustomParameters({prompt:'select_account'});lineProvider.addScope('profile');
+  setupPlannerAssistant(app,()=>window.getPlannerData?.()||{categories:[],items:[]},appCheckState);
  let cloudRef=null,cloudReady=false,stopListening=null,authRevision=0,writeQueue=Promise.resolve(),writeRevision=0;
  async function loadCloudData(user,revision){
   const ref=doc(db,'users',user.uid),snapshot=await getDoc(ref);
