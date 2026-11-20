@@ -119,22 +119,31 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
       return;
     }
     addMessage('user', text);
-    const responseBubble = addMessage('assistant', '正在整理你的行程…', 'pending');
+    const responseBubble = addMessage('assistant', '正在思考，整理你的行程中…', 'pending');
+    responseBubble.setAttribute('role', 'status');
+    responseBubble.setAttribute('aria-live', 'polite');
     input.value = '';
     sending = true;
     setControls();
     try {
-      responseBubble.textContent = '';
-      responseBubble.classList.remove('pending');
       const result = await chat.sendMessageStream(buildPrompt(text));
       for await (const chunk of result.stream) {
-        responseBubble.textContent += chunk.text();
+        const text = chunk.text();
+        if (text) {
+          if (responseBubble.classList.contains('pending')) {
+            responseBubble.textContent = '';
+            responseBubble.classList.remove('pending');
+          }
+          responseBubble.textContent += text;
+        }
         scrollMessages();
       }
       await result.response;
       if (!responseBubble.textContent.trim()) responseBubble.textContent = '我目前沒有整理出合適的回答，請換個方式問問看。';
     } catch (error) {
       responseBubble.classList.add('error');
+      responseBubble.setAttribute('role', 'alert');
+      responseBubble.setAttribute('aria-live', 'assertive');
       responseBubble.textContent = explainError(error);
       if (error?.code === 'permission-denied') chat = model.startChat();
     } finally {
