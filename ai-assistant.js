@@ -119,9 +119,22 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
       return;
     }
     addMessage('user', text);
-    const responseBubble = addMessage('assistant', '正在思考，整理你的行程中…', 'pending');
+    const responseBubble = addMessage('assistant', '', 'pending');
+    const thinkingIcon = document.createElement('span');
+    thinkingIcon.className = 'ai-thinking-icon';
+    thinkingIcon.setAttribute('aria-hidden', 'true');
+    thinkingIcon.textContent = '✦';
+    const thinkingLabel = document.createElement('span');
+    thinkingLabel.className = 'ai-thinking-label';
+    thinkingLabel.textContent = '正在思考，整理你的行程中';
+    const thinkingDots = document.createElement('span');
+    thinkingDots.className = 'ai-thinking-dots';
+    thinkingDots.setAttribute('aria-hidden', 'true');
+    thinkingDots.append(document.createElement('i'), document.createElement('i'), document.createElement('i'));
+    responseBubble.append(thinkingIcon, thinkingLabel, thinkingDots);
     responseBubble.setAttribute('role', 'status');
     responseBubble.setAttribute('aria-live', 'polite');
+    responseBubble.setAttribute('aria-label', '正在思考，整理你的行程中');
     input.value = '';
     sending = true;
     setControls();
@@ -131,16 +144,23 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
         const text = chunk.text();
         if (text) {
           if (responseBubble.classList.contains('pending')) {
-            responseBubble.textContent = '';
+            responseBubble.replaceChildren();
             responseBubble.classList.remove('pending');
+            responseBubble.removeAttribute('aria-label');
           }
           responseBubble.textContent += text;
         }
         scrollMessages();
       }
       await result.response;
-      if (!responseBubble.textContent.trim()) responseBubble.textContent = '我目前沒有整理出合適的回答，請換個方式問問看。';
+      if (!responseBubble.textContent.trim()) {
+        responseBubble.classList.remove('pending');
+        responseBubble.removeAttribute('aria-label');
+        responseBubble.textContent = '我目前沒有整理出合適的回答，請換個方式問問看。';
+      }
     } catch (error) {
+      responseBubble.classList.remove('pending');
+      responseBubble.removeAttribute('aria-label');
       responseBubble.classList.add('error');
       responseBubble.setAttribute('role', 'alert');
       responseBubble.setAttribute('aria-live', 'assertive');
