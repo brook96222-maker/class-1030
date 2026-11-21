@@ -63,7 +63,6 @@ body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang 
 .view-switch button.active{background:#fffdf8;color:#405943;box-shadow:0 1px 4px rgba(51,45,35,.08)}
 .date-nav button{border-radius:7px;background:#f4f1e9;color:#526151}
 .date-nav button:hover{background:#e9eee5}
-.calendar th:nth-child(n),.calendar td:nth-child(n){--weekday-tint:#faf8f3}
 .calendar th{color:#817a6e;font-size:12px;font-weight:700;border-bottom-color:#e6e0d6}
 .calendar td{border-color:#eee9df!important}
 .calendar td:hover{background:#f3f0e8!important}
@@ -71,7 +70,6 @@ body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang 
 .day-num.today{background:#506750;color:#fffdf8;box-shadow:none}
 .day-num.other{color:#bbb5aa}
 .event-pill{border-radius:5px;font-weight:600}
-.event-pill.task{background:#f5ebe2;color:#9b6044}
 .agenda-panel,.task-panel{border-radius:14px}
 .agenda-item{border-radius:7px}
 .agenda-item:hover{background:#f4f1e9;transform:none}
