@@ -25,7 +25,8 @@
 @keyframes aiThinkingDot{0%,60%,100%{opacity:.28;transform:translateY(0) scale(.8)}30%{opacity:1;transform:translateY(-3px) scale(1.1)}}
 @media(prefers-reduced-motion:reduce){.ai-message.pending,.ai-thinking-icon,.ai-thinking-dots i{animation:none}.ai-message.pending{background:#f0f5ef}.ai-thinking-icon,.ai-thinking-dots i{opacity:1}}
 .ai-message.error{background:#fff1ed;color:#a34f3d}
-.ai-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:4px 13px 11px;border-top:1px solid #f1f3ef}
+.ai-suggestions{display:flex;flex-wrap:wrap;gap:7px;padding:8px 13px 11px;border-top:1px solid #f1f3ef}
+.ai-suggestions-label{flex:0 0 100%;color:#89948b;font-size:12px;font-weight:650}
 .ai-suggestion{border:1px solid #e4ebe3;border-radius:999px;background:#fff;color:#637269;padding:7px 10px;font-size:13px;transition:background .15s,border-color .15s}
 .ai-suggestion:hover:not(:disabled){background:#edf4ec;border-color:#d5e4d4;color:#356d51}
 .ai-suggestion:disabled{opacity:.6;cursor:wait}
