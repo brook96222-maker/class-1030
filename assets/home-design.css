@@ -41,10 +41,15 @@ body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang 
 .hero{grid-template-columns:minmax(0,1.55fr) minmax(250px,1fr);gap:16px;margin-bottom:20px}
 .welcome{min-height:128px;padding:23px 26px;border:1px solid #d9e0d4;border-left:4px solid #a7674f;border-radius:14px;background:#e9eee5;box-shadow:none}
 .welcome-kicker{color:#8d715b;font-size:11px;letter-spacing:1.35px}
-.welcome-kicker span{color:#a7674f}
+.welcome-kicker span{display:inline-block;color:#a7674f;animation:quest-twinkle 3.2s ease-in-out infinite;transform-origin:center}
 .welcome h2{margin-bottom:7px;color:#344337;font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;font-size:23px;font-weight:700;letter-spacing:0;line-height:1.4}
 .welcome p{color:#6f766c;font-size:14px}
-.welcome-illustration{filter:grayscale(.12) saturate(.76);opacity:.9}
+.welcome:after{animation:quest-glow 7s ease-in-out infinite}
+.welcome-illustration{filter:grayscale(.12) saturate(.76);opacity:.9;animation:quest-float 4.8s ease-in-out infinite;transform-origin:center bottom}
+@keyframes quest-float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(.8deg)}}
+@keyframes quest-twinkle{0%,100%{opacity:.72;transform:scale(.9) rotate(-8deg)}50%{opacity:1;transform:scale(1.18) rotate(9deg)}}
+@keyframes quest-glow{0%,100%{transform:translate(0,0) scale(.92);opacity:.6}50%{transform:translate(-12px,8px) scale(1.08);opacity:1}}
+@media(prefers-reduced-motion:reduce){.welcome:after,.welcome-illustration,.welcome-kicker span{animation:none}}
 .hero .stats{gap:12px}
 .hero .stat-card{min-height:140px;padding:18px 20px;border-radius:14px;box-shadow:none}
 .hero .stat-card-events{--stat-accent:#9f634c;background:#f3e9de;border-color:#e8d8c8}
