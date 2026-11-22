@@ -119,7 +119,7 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
     if (detail.includes('quota') || detail.includes('resource_exhausted')) {
       return '目前 AI 使用額度已達上限，請稍後再試。';
     }
-    if (detail.includes('timeout') || detail.includes('aborted')) {
+    if (detail.includes('timeout') || detail.includes('timed out') || detail.includes('aborted')) {
       return 'Gemini 回覆逾時，請再試一次。';
     }
     if (detail.includes('network')) return '網路連線失敗，請確認網路後重試。';
