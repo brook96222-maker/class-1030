@@ -384,3 +384,14 @@ body {
   color: #78847f;
 }
 .login-card-foot span { color: #66817e; }
+.login-card .auth-buttons button#googleSignIn {
+  border-color: #c7d5dd;
+  background: #e7eef2;
+  color: #344b58;
+  box-shadow: 0 1px 2px rgba(52, 75, 88, .08);
+}
+.login-card .auth-buttons button#googleSignIn:hover:not(:disabled) {
+  border-color: #aec2cd;
+  background: #dce8ed;
+  box-shadow: 0 6px 16px rgba(52, 75, 88, .12);
+}
