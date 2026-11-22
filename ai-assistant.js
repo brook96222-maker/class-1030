@@ -28,12 +28,12 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
     if (!appCheck.ready) throw new Error(setupError || 'Firebase App Check 尚未完成 reCAPTCHA Enterprise 設定。');
     const ai = getAI(app, { backend: new GoogleAIBackend(), useLimitedUseAppCheckTokens: true });
     model = getGenerativeModel(ai, {
-      model: 'gemini-3.8-flash',
+      model: 'gemini-3.5-flash-lite',
       systemInstruction: SYSTEM_INSTRUCTION,
       generationConfig: {
         temperature: 0.35,
         maxOutputTokens: 450,
-        thinkingConfig: { thinkingLevel: 'LOW' }
+        thinkingConfig: { thinkingLevel: 'MINIMAL' }
       }
     }, { timeout: 30000 });
     chat = model.startChat();
@@ -153,25 +153,12 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
     sending = true;
     setControls();
     try {
-      const result = await chat.sendMessageStream(buildPrompt(text));
-      for await (const chunk of result.stream) {
-        const text = chunk.text();
-        if (text) {
-          if (responseBubble.classList.contains('pending')) {
-            responseBubble.replaceChildren();
-            responseBubble.classList.remove('pending');
-            responseBubble.removeAttribute('aria-label');
-          }
-          responseBubble.textContent += text;
-        }
-        scrollMessages();
-      }
-      await result.response;
-      if (!responseBubble.textContent.trim()) {
-        responseBubble.classList.remove('pending');
-        responseBubble.removeAttribute('aria-label');
-        responseBubble.textContent = '我目前沒有整理出合適的回答，請換個方式問問看。';
-      }
+      const result = await chat.sendMessage(buildPrompt(text));
+      const answer = result.response.text();
+      responseBubble.classList.remove('pending');
+      responseBubble.removeAttribute('aria-label');
+      responseBubble.textContent = answer || '我目前沒有整理出合適的回答，請換個方式問問看。';
+      scrollMessages();
     } catch (error) {
       responseBubble.classList.remove('pending');
       responseBubble.removeAttribute('aria-label');
