@@ -160,6 +160,11 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
       responseBubble.textContent = answer || '我目前沒有整理出合適的回答，請換個方式問問看。';
       scrollMessages();
     } catch (error) {
+      console.warn('[簡單日曆 AI] Gemini request failed', {
+        code: error?.code || '',
+        message: String(error?.message || error || '').slice(0, 2000),
+        status: error?.customErrorData?.status || ''
+      });
       responseBubble.classList.remove('pending');
       responseBubble.removeAttribute('aria-label');
       responseBubble.classList.add('error');
