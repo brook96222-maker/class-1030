@@ -28,7 +28,7 @@ export function setupPlannerAssistant(app, getPlannerData, appCheck = {}) {
     if (!appCheck.ready) throw new Error(setupError || 'Firebase App Check 尚未完成 reCAPTCHA Enterprise 設定。');
     const ai = getAI(app, { backend: new GoogleAIBackend(), useLimitedUseAppCheckTokens: true });
     model = getGenerativeModel(ai, {
-      model: 'gemini-4-hydrogen',
+      model: 'gemini-3.8-flash',
       systemInstruction: SYSTEM_INSTRUCTION,
       generationConfig: {
         temperature: 0.35,
