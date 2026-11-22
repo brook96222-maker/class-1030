@@ -395,3 +395,9 @@ body {
   background: #bfd2dc;
   box-shadow: 0 6px 16px rgba(41, 63, 76, .15);
 }
+.login-card .auth-buttons button#googleSignIn,
+.login-card .auth-buttons button#lineSignIn {
+  height: 54px;
+  min-height: 54px;
+  border-radius: 13px;
+}
