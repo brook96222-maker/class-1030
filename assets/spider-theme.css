@@ -284,18 +284,20 @@ body {
   justify-self: center;
   max-width: 440px;
   padding: clamp(25px,4vw,36px);
-  border: 1px solid #fff;
-  background: #fff;
-  box-shadow: 0 24px 68px rgba(0,0,0,.38);
-  color: #14263d;
+  overflow: hidden;
+  border: 1px solid rgba(207,224,242,.34);
+  background: linear-gradient(150deg,rgba(24,48,74,.98),rgba(13,30,50,.98));
+  box-shadow: 0 24px 68px rgba(0,0,0,.48),0 0 30px rgba(52,96,143,.14);
+  color: #f7f9fc;
   text-align: center;
 }
+.login-card:before { position: absolute; top: 0; left: 32px; right: 32px; height: 3px; border-radius: 0 0 3px 3px; background: linear-gradient(90deg,#be3541,#547fa9); content: ""; }
 .login-card-mark { margin-inline: auto; }
-.login-card-eyebrow { color: #244f7c; }
+.login-card h2.login-card-heading { margin: 16px 0 22px; color: #fff; font-size: 20px; font-weight: 720; letter-spacing: .04em; }
 .login-heading { margin: 4px 0 0; color: #12253c; font-size: clamp(24px,3vw,30px); font-weight: 780; letter-spacing: .015em; line-height: 1.45; }
 .login-card-copy { color: #4f5f73; }
 .login-card .auth-buttons button { background: #fff; color: #17324f; }
-.login-card-foot { justify-content: center; color: #59697c; }
+.login-card-foot { justify-content: center; border-top-color: rgba(220,232,245,.18); color: #c5d1df; }
 .login-card .auth-buttons button#googleSignIn {
   min-height: 48px;
   border-color: #dadce0;
@@ -318,4 +320,5 @@ body {
   .login-eyebrow { margin-top: 10px; }
   .login-heading { font-size: 25px; }
   .login-card { padding: 22px 20px; }
+  .login-card h2.login-card-heading { margin: 13px 0 18px; font-size: 18px; }
 }
