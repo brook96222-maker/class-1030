@@ -292,7 +292,7 @@ body {
 }
 .login-card-mark { margin-inline: auto; }
 .login-card-eyebrow { color: #244f7c; }
-.login-card h2 { color: #12253c; }
+.login-heading { margin: 4px 0 0; color: #12253c; font-size: clamp(24px,3vw,30px); font-weight: 780; letter-spacing: .015em; line-height: 1.45; }
 .login-card-copy { color: #4f5f73; }
 .login-card .auth-buttons button { background: #fff; color: #17324f; }
 .login-card-foot { justify-content: center; color: #59697c; }
@@ -305,7 +305,6 @@ body {
   #authGate { align-content: center; gap: 16px; padding: 22px 18px calc(22px + env(safe-area-inset-bottom)); }
   #authGate:before { background-position: center, 62% 18%; }
   .login-eyebrow { margin-top: 10px; }
-  .login-copy h1 { font-size: 29px; }
-  .login-copy-text { font-size: 13px; }
+  .login-heading { font-size: 25px; }
   .login-card { padding: 22px 20px; }
 }
